@@ -1,0 +1,24 @@
+{
+  "name": "linearregweb",
+  "version": "1.0.0",
+  "description": "Linear-Regression Web Interface",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jez-from-the-6/LInearRegWeb.git"
+  },
+  "keywords": [
+    "web",
+    "react",
+    "linearalgebra"
+  ],
+  "author": "Jan Schering",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jez-from-the-6/LInearRegWeb/issues"
+  },
+  "homepage": "https://github.com/Jez-from-the-6/LInearRegWeb#readme"
+}

@@ -1,3 +1,3 @@
-const conf = require("./skeleton/webpack.config")
+let config = require("./skeleton/webpack.config");
 
-module.exports = conf
+module.exports = config()

@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Linear-Regression Web Interface",
   "main": "webpack.config.js",
-  "scripts": {
-    "test": "test"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jez-from-the-6/LInearRegWeb.git"
@@ -17,6 +14,17 @@
   ],
   "author": "Jan Schering",
   "license": "ISC",
+  "dry": {
+    "extends": "./skeleton/package-dry.json"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 9001 -c .storybook"
+  },
   "bugs": {
     "url": "https://github.com/Jez-from-the-6/LInearRegWeb/issues"
   },

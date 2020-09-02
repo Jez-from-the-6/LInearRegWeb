@@ -27,6 +27,8 @@ export const Main = () : JSX.Element => {
         return () => mounted = false;
         async function getData() {
             let result = await dataService.requestGET(Constants.apiBaseUrl)
+            let lineParams = await dataService.requestGET(Constants.apiModelUrl + "?alpha=0.01&iterations=400")
+            console.log(lineParams);
             let graphicData = {
                 dataScatter: {
                     labels: ['Scatter'],

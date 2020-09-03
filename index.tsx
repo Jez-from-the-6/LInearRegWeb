@@ -6,4 +6,10 @@ import React from "react"
 import { render } from 'react-dom';
 import App from "./skeleton/app";
 
+declare global {
+    interface Window {
+        Plotly:any;
+    }
+}
+
 render(<App />, document.getElementById('root'));

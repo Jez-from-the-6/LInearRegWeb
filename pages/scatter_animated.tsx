@@ -21,17 +21,42 @@ export const Main = () : JSX.Element => {
         return {x, y}
     }
 
-    const processTheta = (theta) => {
-        let x = []
-        let y = []
-        for (var i = 0; i < 22; i++) {
-            x.push(i)
-            y.push(theta[0][0] + (theta[1][0] * i))
-        } 
-        return {x, y};
+    const prepLinearRegAnimation = (theta_hist, scatterData) => {
+        let scatterObject = {
+            x: scatterData["x"],
+            y: scatterData["y"],
+            type: 'scatter',
+            mode: 'markers',
+            marker: {color: 'purple'}
+        }
+
+        let frames = [];
+
+        theta_hist.map(theta => {
+            let x = [];
+            let y = [];
+            for (var i = 0; i < 22; i++) {
+                x.push(i)
+                y.push(theta[0] + (theta[1] * i))
+            } 
+            frames.push({  
+                data: [
+                    scatterObject,
+                    { 
+                        x,
+                        y,
+                        type: 'scatter',
+                        mode: 'lines',
+                        marker: {color: 'blue'},
+                    }
+                ]  
+            })
+        })
+           
+        return {frames, scatterObject};
     }
 
-
+    
     useEffect(() => {
         console.log("called")
         let mounted = true 
@@ -43,25 +68,10 @@ export const Main = () : JSX.Element => {
             console.log(lineParams);
             let scatterData = processDataset(result);
             console.log(scatterData)
-            let lineData = processTheta(lineParams.theta)
-            console.log(lineData)
-            let graphicData = [{
-                x: scatterData["x"],
-                y: scatterData["y"],
-                type: 'scatter',
-                mode: 'markers',
-                marker: {color: 'purple'}
-            },
-            {
-                x: lineData["x"],
-                y: lineData["y"],
-                type: 'scatter',
-                mode: 'lines',
-                marker: {color: 'blue'}
-            }]
+            let graphicData = prepLinearRegAnimation(lineParams.theta_history, scatterData)
 
             if(mounted) {
-                setScatterGraphics(graphicData)
+                setScatterGraphics({frames: graphicData.frames, base: graphicData.scatterObject})
             }
         }
 
@@ -71,8 +81,11 @@ export const Main = () : JSX.Element => {
 
     return scatterGraphics?  (
             <MDBContainer>
+                <div id="graph"/>
+                {Plot.react('graph', { data: [scatterGraphics.base] })}
                 <Plot
-                data={scatterGraphics}
+                data={[scatterGraphics.base]}
+                frames={scatterGraphics.frames}
                 layout={{
                     width: 1100,
                     height: 800,

@@ -1,12 +1,17 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {dataService} from "../skeleton/src/Routing/utilities/data.service";
 import Constants from "../skeleton/src/utils/textConstants";
-import {MDBContainer} from 'mdbreact';
+import {MDBContainer, MDBBtn} from 'mdbreact';
 import Plot from "react-plotly.js"
+import * as Plotly from "plotly.js";
+
 
 export const Main = () : JSX.Element => {
     const [scatterGraphics, setScatterGraphics] = useState(null);
     
+    const graphicRef = useRef(null)
+
+
    
     const processDataset = (data) => {
         console.log(data)
@@ -58,7 +63,7 @@ export const Main = () : JSX.Element => {
 
     
     useEffect(() => {
-        console.log("called")
+        console.log(Plotly)
         let mounted = true 
         getData()
         return () => mounted = false;
@@ -71,18 +76,42 @@ export const Main = () : JSX.Element => {
             let graphicData = prepLinearRegAnimation(lineParams.theta_history, scatterData)
 
             if(mounted) {
+                
                 setScatterGraphics({frames: graphicData.frames, base: graphicData.scatterObject})
             }
         }
 
     }, [])
 
-        
+    const create = () => {
+        Plotly.newPlot(graphicRef.current, [{
+            x: [1, 2, 3],
+            y: [0, 0.5, 1],
+            line: {simplify: false},
+        }])    
+    }
+
+    const animate = () => {
+        Plotly.animate(graphicRef.current, {
+            data: [{y: [Math.random(), Math.random(), Math.random()]}],
+            traces: [0],
+            layout: {}
+          }, {
+            transition: {
+              duration: 500,
+              easing: 'cubic-in-out'
+            },
+            frame: {
+              duration: 500
+            }
+          })
+    }
 
     return scatterGraphics?  (
-            <MDBContainer>
-                <div id="graph"/>
-                {Plot.react('graph', { data: [scatterGraphics.base] })}
+            <MDBContainer>   
+                <div id="myDiv" ref={graphicRef} />
+                <button onClick={create}>Create!</button> 
+                <button onClick={animate}>Animate!</button> 
                 <Plot
                 data={[scatterGraphics.base]}
                 frames={scatterGraphics.frames}

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {dataService} from "../skeleton/Routing/utilities/data.service";
-import Constants from "../skeleton/shared/utils/textConstants";
+import {dataService} from "../../skeleton/Routing/utilities/data.service";
+import Constants from "../../skeleton/shared/utils/textConstants";
 import {Scatter} from 'react-chartjs-2';
 import {MDBContainer} from 'mdbreact';
 

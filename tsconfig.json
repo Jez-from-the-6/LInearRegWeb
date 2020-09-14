@@ -14,6 +14,6 @@
     "./babel.config.js",
     "./skeleton/babel.config.js",
     "./skeleton/jest.config.js",
-    "./skeleton/Routing/*"
+    "./skeleton/Routing/utilities/*",
   ]
 }

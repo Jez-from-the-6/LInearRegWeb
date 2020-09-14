@@ -8,13 +8,8 @@ import * as Plotly from "plotly.js";
 
 export const Main = () : JSX.Element => {
     const [scatterGraphics, setScatterGraphics] = useState(null);
-    
-    const graphicRef = useRef(null)
-
-
    
     const processDataset = (data) => {
-        console.log(data)
         let x = [];
         let y = [];
         Object.keys(data).map(key => {
@@ -36,8 +31,8 @@ export const Main = () : JSX.Element => {
         }
 
         let frames = [];
-
-        theta_hist.map(theta => {
+        console.log(theta_hist)
+        theta_hist.map((theta, index) => {
             let x = [];
             let y = [];
             for (var i = 0; i < 22; i++) {
@@ -54,66 +49,47 @@ export const Main = () : JSX.Element => {
                         mode: 'lines',
                         marker: {color: 'blue'},
                     }
-                ]  
+                ],
+                name: "frame" + index  
             })
         })
            
-        return {frames, scatterObject};
+        return {frames, base: frames[0].data};
     }
 
     
     useEffect(() => {
-        console.log(Plotly)
         let mounted = true 
         getData()
         return () => mounted = false;
         async function getData() {
             let result = await dataService.requestGET(Constants.apiBaseUrl)
             let lineParams = await dataService.requestGET(Constants.apiModelUrl + "?alpha=0.01&iterations=400")
-            console.log(lineParams);
             let scatterData = processDataset(result);
-            console.log(scatterData)
             let graphicData = prepLinearRegAnimation(lineParams.theta_history, scatterData)
-
             if(mounted) {
                 
-                setScatterGraphics({frames: graphicData.frames, base: graphicData.scatterObject})
+                setScatterGraphics(graphicData)
             }
         }
 
     }, [])
 
-    const create = () => {
-        Plotly.newPlot(graphicRef.current, [{
-            x: [1, 2, 3],
-            y: [0, 0.5, 1],
-            line: {simplify: false},
-        }])    
-    }
-
     const animate = () => {
-        Plotly.animate(graphicRef.current, {
-            data: [{y: [Math.random(), Math.random(), Math.random()]}],
-            traces: [0],
-            layout: {}
-          }, {
-            transition: {
-              duration: 500,
-              easing: 'cubic-in-out'
-            },
-            frame: {
-              duration: 500
-            }
-          })
+        let frameNames = scatterGraphics.frames.map(frame => frame.name)
+        Plotly.animate('graph', frameNames, {
+            frame: {duration: 1000},
+            transition: {duration: 10000, easing: 'linear'},
+            mode: 'afterall'
+        })
     }
 
     return scatterGraphics?  (
             <MDBContainer>   
-                <div id="myDiv" ref={graphicRef} />
-                <button onClick={create}>Create!</button> 
                 <button onClick={animate}>Animate!</button> 
                 <Plot
-                data={[scatterGraphics.base]}
+                data={scatterGraphics.base}
+                divId="graph"
                 frames={scatterGraphics.frames}
                 layout={{
                     width: 1100,

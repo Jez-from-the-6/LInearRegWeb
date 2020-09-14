@@ -39,7 +39,7 @@ export const Main = () : JSX.Element => {
                 layout={{
                     width: 1100,
                     height: 800,
-                    title: 'A Fancy Plot',
+                    title: 'Average Prediction Error as a Function of the Linear Model',
                 }}
                 />
             </MDBContainer>

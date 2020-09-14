@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {dataService} from "../skeleton/src/Routing/utilities/data.service";
-import Constants from "../skeleton/src/utils/textConstants";
+import {dataService} from "../skeleton/Routing/utilities/data.service";
+import Constants from "../skeleton/shared/utils/textConstants";
 import {MDBContainer} from 'mdbreact';
 import Plot from "react-plotly.js"
 

@@ -8,7 +8,6 @@ export const Main = () : JSX.Element => {
     const [scatterGraphics, setScatterGraphics] = useState(null);
 
     useEffect(() => {
-        console.log("called")
         let mounted = true 
         getData()
         return () => mounted = false;

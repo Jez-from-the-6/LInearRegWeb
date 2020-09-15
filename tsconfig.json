@@ -9,11 +9,11 @@
     "esModuleInterop": true
   },
   "exclude": [
-    "./node_modules/**",
+    "node_modules/*",
     "./dist/**",
     "./babel.config.js",
-    "./skeleton/babel.config.js",
-    "./skeleton/jest.config.js",
-    "./skeleton/Routing/utilities/*",
+    "skeleton/babel.config.js",
+    "skeleton/jest.config.js",
+    "**/skeleton/Routing/utilities/*",
   ]
 }

@@ -27,6 +27,7 @@ export const Main = () : JSX.Element => {
             y: scatterData["y"],
             type: 'scatter',
             mode: 'markers',
+            name: "Observed Housing Prices",
             marker: {color: 'purple'}
         }
 
@@ -47,6 +48,7 @@ export const Main = () : JSX.Element => {
                         y,
                         type: 'scatter',
                         mode: 'lines',
+                        name: 'Linear Prediction Model',
                         marker: {color: 'blue'},
                     }
                 ],
@@ -75,6 +77,7 @@ export const Main = () : JSX.Element => {
 
     }, [])
 
+    /*
     const animate = () => {
         let frameNames = scatterGraphics.frames.map(frame => frame.name)
         Plotly.animate('graph', frameNames, {
@@ -82,19 +85,50 @@ export const Main = () : JSX.Element => {
             transition: {duration: 10000, easing: 'linear'},
             mode: 'afterall'
         })
+    } 
+    */
+
+    const getUpdateMenu = () => {
+        console.log("called", scatterGraphics)
+        let frameNames =  scatterGraphics.frames.map(frame => frame.name);
+        let transitionOptions = {frame: {duration: 1000}, transition: {duration: 10000, easing: 'linear'}, mode: 'afterall'};
+
+        return [{
+            buttons: [
+                {
+                    args: [
+                        frameNames,
+                        transitionOptions
+                        
+                    ],
+                    label: 'Train Model!',
+                    method: 'animate',
+                    execute: true
+                },
+            ],
+            direction: 'left',
+            pad: {'r': 0, 't': 0},
+            showactive: true,
+            type: 'buttons',
+            x: 0,
+            xanchor: 'left',
+            y: 1.3,
+            yanchor: 'top'
+        }]
     }
 
     return scatterGraphics?  (
             <MDBContainer>   
-                <button onClick={animate}>Animate!</button> 
                 <Plot
                 data={scatterGraphics.base}
                 divId="graph"
                 frames={scatterGraphics.frames}
                 layout={{
-                    width: 1100,
-                    height: 800,
-                    title: 'A Fancy Plot',
+                    width: 550,
+                    height: 400,
+                    margin: {t: 100},
+                    title: 'Housing Price/ Profit',
+                    updatemenus: getUpdateMenu(),
                 }}
                 />
             </MDBContainer>

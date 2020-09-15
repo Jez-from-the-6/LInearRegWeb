@@ -74,8 +74,8 @@ export const Main = () : JSX.Element => {
                 <Plot
                 data={scatterGraphics}
                 layout={{
-                    width: 1100,
-                    height: 800,
+                    width: 550,
+                    height: 400,
                     title: 'A Fancy Plot',
                 }}
                 />

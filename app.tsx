@@ -8,14 +8,14 @@ import Intro from "./src/pages/Intro.mdx";
 import Projects from "./src/pages/Projects.mdx";
 import SharedImages from "./skeleton/shared/images/imgIndex"
 import Navbar from "./skeleton/shared/components/navbar";
-import Sliders from "./skeleton/shared/components/landingSliders";
  
 const App = () => {
   return (
     <div style={{
     width: "100%",
-    height: "100%",
-    backgroundImage: "url('" + SharedImages.NetGraphic + "')",
+    height: "max-content",
+    minHeight: "100%",
+    backgroundImage: "url('" + SharedImages.NasaBG + "')",
     padding: "0rem 0rem 100% 0rem !important",
     paddingBottom: "0% !important",
     backgroundSize: "cover",

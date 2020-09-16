@@ -3,11 +3,12 @@
     "module": "commonjs",
     "target": "ES6",
     "sourceMap": true,
-    "allowJs": true,
+    "allowJs": false,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
+  "noEmit": false,
   "exclude": [
     "node_modules/*",
     "./dist/**",

@@ -4,7 +4,7 @@ import 'mdbreact/dist/css/mdb.css';
 import './skeleton/shared/css/app.css';
 import React from "react"
 import { render } from 'react-dom';
-import App from "./skeleton/shared/components/app";
+import App from "./app";
 
 declare global {
     interface Window {

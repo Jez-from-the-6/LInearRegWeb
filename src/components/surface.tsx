@@ -35,16 +35,14 @@ export const Surface_Costfunction = (): JSX.Element => {
   }, []);
 
   return graphicOptions ? (
-    <MDBContainer>
-      <Plot
-        data={graphicOptions}
-        layout={{
-          width: 550,
-          height: 400,
-          title: 'Average Prediction Error as a Function of the Linear Model',
-        }}
-      />
-    </MDBContainer>
+    <Plot
+      data={graphicOptions}
+      layout={{
+        width: 550,
+        height: 400,
+        title: 'Average Prediction Error as a Function of the Linear Model',
+      }}
+    />
   ) : (
     <div>LOADING</div>
   );

@@ -125,20 +125,18 @@ export const Scatter_With_Model = (): JSX.Element => {
   };
 
   return graphicOptions ? (
-    <MDBContainer>
-      <Plot
-        data={graphicOptions.baseFrame}
-        divId="graph"
-        frames={graphicOptions.frames}
-        layout={{
-          width: 550,
-          height: 400,
-          margin: { t: 100 },
-          title: 'Housing Price/ Profit',
-          updatemenus: getAnimationButton(),
-        }}
-      />
-    </MDBContainer>
+    <Plot
+      data={graphicOptions.baseFrame}
+      divId="graph"
+      frames={graphicOptions.frames}
+      layout={{
+        width: 550,
+        height: 400,
+        margin: { t: 100 },
+        title: 'Housing Price/ Profit',
+        updatemenus: getAnimationButton(),
+      }}
+    />
   ) : (
     <div>LOADING</div>
   );

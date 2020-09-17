@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LandingSliders from '../../skeleton/shared/components/landingSliders';
+import LandingSliders from '../../skeleton/shared/components/sliders';
 import DOC from './Intro.mdx';
 
 const Frame = (...children): JSX.Element => {

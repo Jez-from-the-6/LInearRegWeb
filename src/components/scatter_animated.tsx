@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { dataService } from '../../skeleton/Routing/utilities/data.service';
-import Constants from '../../skeleton/shared/utils/textConstants';
+import { useAsyncEffect } from 'use-async-effect';
+import { dataService } from '../../../../Routing/utilities/data.service';
+import Constants from '../../../../shared/utils/textConstants';
 import { MDBContainer, MDBBtn } from 'mdbreact';
 import Plot from 'react-plotly.js';
 import * as Plotly from 'plotly.js';
-import { Coordinates2D, SetOfParams } from '../../skeleton/shared/utils/types';
+import { Coordinates2D, SetOfParams } from '../../../../shared/utils/types';
 
 /**
  * @description Requests the Dataset and Model from the Backend and uses it generate a graphic.
@@ -71,19 +72,16 @@ export const Scatter_With_Model = (): JSX.Element => {
     return { frames, baseFrame: frames[0].data };
   };
 
-  useEffect(() => {
-    let mounted = true;
-    getData();
-    return () => (mounted = false);
-    async function getData() {
-      let result = await dataService.requestGET(Constants.apiBaseUrl);
-      let lineParams = await dataService.requestGET(Constants.apiModelUrl + '?alpha=0.01&iterations=400');
-      let scatterData = processDataset(result);
-      let graphicData = prepLinearRegAnimation(lineParams.theta_history, scatterData);
-      if (mounted) {
-        setGraphicOptions(graphicData);
-      }
-    }
+  useAsyncEffect(async isMounted => {
+    const data = await dataService.requestGET(Constants.apiBaseUrl);
+    if (!isMounted()) return;
+
+    const lineParams = await dataService.requestGET(Constants.apiModelUrl + '?alpha=0.01&iterations=400');
+    if (!isMounted()) return;
+
+    let scatterData = processDataset(data);
+    let graphicData = prepLinearRegAnimation(lineParams.theta_history, scatterData);
+    setGraphicOptions(graphicData);
   }, []);
 
   /*

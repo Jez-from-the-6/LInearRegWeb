@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { dataService } from '../../skeleton/Routing/utilities/data.service';
-import Constants from '../../skeleton/shared/utils/textConstants';
+import { useAsyncEffect } from 'use-async-effect';
+import { dataService } from '../../../../Routing/utilities/data.service';
+import Constants from '../../../../shared/utils/textConstants';
 import { MDBContainer } from 'mdbreact';
-import { APICostSurfaceParams } from '../../skeleton/shared/utils/types';
+import { APICostSurfaceParams } from '../../../../shared/utils/types';
 import Plot from 'react-plotly.js';
 
 /**
@@ -12,26 +13,20 @@ import Plot from 'react-plotly.js';
 export const Surface_Costfunction = (): JSX.Element => {
   const [graphicOptions, setGraphicOptions] = useState(null);
 
-  useEffect(() => {
-    let mounted = true;
-    getData();
-    return () => (mounted = false);
+  useAsyncEffect(async isMounted => {
+    const surfaceParams: APICostSurfaceParams = await dataService.requestGET(Constants.apiSurfaceUrl);
+    if (!isMounted()) return;
 
-    async function getData() {
-      let surfaceParams: APICostSurfaceParams = await dataService.requestGET(Constants.apiSurfaceUrl);
-      let graphicData = [
-        {
-          x: surfaceParams.theta1_vals,
-          y: surfaceParams.theta0_vals,
-          z: surfaceParams.J_vals,
-          type: 'surface',
-        },
-      ];
+    const graphicData = [
+      {
+        x: surfaceParams.theta1_vals,
+        y: surfaceParams.theta0_vals,
+        z: surfaceParams.J_vals,
+        type: 'surface',
+      },
+    ];
 
-      if (mounted) {
-        setGraphicOptions(graphicData);
-      }
-    }
+    setGraphicOptions(graphicData);
   }, []);
 
   return graphicOptions ? (

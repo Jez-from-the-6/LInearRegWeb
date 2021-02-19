@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { dataService } from '../../skeleton/Routing/utilities/data.service';
-import Constants from '../../skeleton/shared/utils/textConstants';
+import { useAsyncEffect } from 'use-async-effect';
+import { dataService } from '../../../../Routing/utilities/data.service';
+import Constants from '../../../../shared/utils/textConstants';
 import { MDBContainer } from 'mdbreact';
 import Plot from 'react-plotly.js';
 
@@ -30,40 +31,33 @@ export const Main = (): JSX.Element => {
     return { x, y };
   };
 
-  useEffect(() => {
-    console.log('called');
-    let mounted = true;
-    getData();
-    return () => (mounted = false);
-    async function getData() {
-      let result = await dataService.requestGET(Constants.apiBaseUrl);
-      let lineParams = await dataService.requestGET(Constants.apiModelUrl + '?alpha=0.01&iterations=400');
-      console.log(lineParams);
-      let scatterData = processDataset(result);
-      console.log(scatterData);
-      let lineData = processTheta(lineParams.theta);
-      console.log(lineData);
-      let graphicData = [
-        {
-          x: scatterData['x'],
-          y: scatterData['y'],
-          type: 'scatter',
-          mode: 'markers',
-          marker: { color: 'purple' },
-        },
-        {
-          x: lineData['x'],
-          y: lineData['y'],
-          type: 'scatter',
-          mode: 'lines',
-          marker: { color: 'blue' },
-        },
-      ];
+  useAsyncEffect(async isMounted => {
+    const data = await dataService.requestGET(Constants.apiBaseUrl);
+    if (!isMounted()) return;
 
-      if (mounted) {
-        setScatterGraphics(graphicData);
-      }
-    }
+    const lineParams = await dataService.requestGET(Constants.apiModelUrl + '?alpha=0.01&iterations=400');
+    if (!isMounted()) return;
+
+    const scatterData = processDataset(data);
+    const lineData = processTheta(lineParams.theta);
+    const graphicData = [
+      {
+        x: scatterData['x'],
+        y: scatterData['y'],
+        type: 'scatter',
+        mode: 'markers',
+        marker: { color: 'purple' },
+      },
+      {
+        x: lineData['x'],
+        y: lineData['y'],
+        type: 'scatter',
+        mode: 'lines',
+        marker: { color: 'blue' },
+      },
+    ];
+
+    setScatterGraphics(graphicData);
   }, []);
 
   return scatterGraphics ? (
